@@ -3,15 +3,16 @@ import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
 const PostForm = () => {
   return (
-    <div>
+    <div id="user-post">
       <Form id="login" tag={RRForm} method="post">
         <FormGroup>
-          <Label for="post">Email</Label>
+          <Label for="user-post">Email</Label>
           <Input
-            id="post"
+            id="user-post"
             name="content"
             placeholder="I did this thing today..."
             type="textarea"
+            className="user-post"
             style={{
               resize: "vertical",
               maxHeight: "12rem",

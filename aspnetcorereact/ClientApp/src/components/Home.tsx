@@ -1,5 +1,4 @@
-// @ts-check
-import { useActionData, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import httpClient from "../shared/HttpClient";
 import Post from "../types/post";
 import PostForm from "./PostForm";
@@ -8,15 +7,15 @@ interface HomeLoadData {
   posts: Post[];
 }
 
-interface PostData {
-  post: Post;
+export interface PostPostArgs {
+  content: string;
 }
 
 export const action = async ({ request }: any) => {
   const formData = await request.formData();
-  const updates = Object.fromEntries(formData);
-  const post = await postPost(updates);
-  return { post };
+  const postContent = Object.fromEntries(formData) as PostPostArgs;
+  const resp = await createPost(postContent);
+  return { resp };
 };
 
 export const loader = async () => {
@@ -32,14 +31,24 @@ export const loader = async () => {
 
 export default function Home() {
   const { posts } = useLoaderData() as HomeLoadData;
-  const { post } = useActionData() as PostData;
-  console.log(post);
+  // Move this back to being done in an action so that react router dom will properly run the loader again, this time dont use useactiondata
+  // const postPost = async (data: PostPostArgs) => {
+  //   const client = httpClient;
+  //   const resp = await client.post("/api/posts", data);
+  //   return resp.data;
+  // };
+
   return (
     <>
       <div id="post-wall">
-        <PostForm />
+        <PostForm
+        // makePost={(body: PostPostArgs) => {
+        //   console.log(body);
+        //   postPost(body);
+        //   return body.content;
+        // }}
+        />
         {posts.map((post: Post) => {
-          // const date = new Date(post.createdAt);
           return (
             <div className="post-border" key={post.id}>
               <div className="post">
@@ -59,7 +68,7 @@ async function getWall() {
   return resp.data;
 }
 
-async function postPost(data: object) {
+async function createPost(data: PostPostArgs) {
   const client = httpClient;
   const resp = await client.post("/api/posts", data);
   return resp.data;
