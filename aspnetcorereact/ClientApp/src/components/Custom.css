@@ -107,6 +107,13 @@ html {
   width: 50%;
 }
 
+#home {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
 #post-wall {
   display: flex;
   flex-direction: column;

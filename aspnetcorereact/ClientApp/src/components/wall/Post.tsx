@@ -4,8 +4,16 @@ export interface PostProps {
   createdAt: string;
 }
 
-const Post = (post: PostProps) => {
-  return <></>;
+const Post = (props: PostProps) => {
+  return (
+    <>
+      <div className="post-border">
+        <div className="post">
+          <div className="post-content">{props.content}</div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Post;

@@ -1,4 +1,4 @@
-import { PostProps } from "./Post";
+import Post, { PostProps } from "./Post";
 
 interface PostWallProps {
   posts: PostProps[];
@@ -6,17 +6,11 @@ interface PostWallProps {
 
 const PostWall = ({ posts }: PostWallProps) => {
   return (
-    <>
+    <div id="post-wall">
       {posts.map((post: PostProps) => {
-        return (
-          <div className="post-border" key={post.id}>
-            <div className="post">
-              <div className="post-content">{post.content}</div>
-            </div>
-          </div>
-        );
+        return <Post {...post} key={post.id} />;
       })}
-    </>
+    </div>
   );
 };
 

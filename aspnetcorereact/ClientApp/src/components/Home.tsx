@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <>
-      <div id="post-wall">
+      <div id="home">
         <PostForm />
         <PostWall posts={posts} />
       </div>
