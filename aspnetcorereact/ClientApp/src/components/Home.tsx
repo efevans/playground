@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import httpClient from "../shared/HttpClient";
 import Post from "../types/post";
 import PostForm from "./PostForm";
+import PostWall from "./PostWall";
 
 interface HomeLoadData {
   posts: Post[];
@@ -36,15 +37,7 @@ export default function Home() {
     <>
       <div id="post-wall">
         <PostForm />
-        {posts.map((post: Post) => {
-          return (
-            <div className="post-border" key={post.id}>
-              <div className="post">
-                <div className="post-content">{post.content}</div>
-              </div>
-            </div>
-          );
-        })}
+        <PostWall posts={posts} />
       </div>
     </>
   );
