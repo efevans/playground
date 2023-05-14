@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import httpClient from "../shared/HttpClient";
-import Post from "../types/post";
-import PostForm from "./PostForm";
-import PostWall from "./PostWall";
+import { PostProps } from "./wall/Post";
+import PostForm from "./wall/PostForm";
+import PostWall from "./wall/PostWall";
 
 interface HomeLoadData {
-  posts: Post[];
+  posts: PostProps[];
 }
 
 export interface PostPostArgs {

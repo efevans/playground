@@ -1,13 +1,13 @@
-import Post from "../types/post";
+import { PostProps } from "./Post";
 
 interface PostWallProps {
-  posts: Post[];
+  posts: PostProps[];
 }
 
 const PostWall = ({ posts }: PostWallProps) => {
   return (
     <>
-      {posts.map((post: Post) => {
+      {posts.map((post: PostProps) => {
         return (
           <div className="post-border" key={post.id}>
             <div className="post">
