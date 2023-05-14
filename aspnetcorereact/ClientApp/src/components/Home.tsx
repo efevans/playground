@@ -31,23 +31,11 @@ export const loader = async () => {
 
 export default function Home() {
   const { posts } = useLoaderData() as HomeLoadData;
-  // Move this back to being done in an action so that react router dom will properly run the loader again, this time dont use useactiondata
-  // const postPost = async (data: PostPostArgs) => {
-  //   const client = httpClient;
-  //   const resp = await client.post("/api/posts", data);
-  //   return resp.data;
-  // };
 
   return (
     <>
       <div id="post-wall">
-        <PostForm
-        // makePost={(body: PostPostArgs) => {
-        //   console.log(body);
-        //   postPost(body);
-        //   return body.content;
-        // }}
-        />
+        <PostForm />
         {posts.map((post: Post) => {
           return (
             <div className="post-border" key={post.id}>
