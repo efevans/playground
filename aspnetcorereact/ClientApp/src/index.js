@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 
 import App from './App';
 import ErrorPage from './components/ErrorPage';
-import Counter from './components/Counter';
 import UserTable, { loader as userListLoader } from './components/UserTable';
 import User, { loader as userLoader } from './components/User';
 import Login from './components/Login';
@@ -19,7 +18,6 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Home />} loader={homeLoader} action={homeAction} />
-        <Route path="/counter" element={<Counter />} />
         <Route path="/users" element={<UserTable />} loader={userListLoader} />
         <Route path="/users/:userId" element={<User />} loader={userLoader} />
         <Route path="/login" element={<Login />}>

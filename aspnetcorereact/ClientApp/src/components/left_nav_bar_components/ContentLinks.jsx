@@ -11,11 +11,6 @@ const ContentLinks = () => {
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} to={"/counter"}>
-            Counter
-          </NavLink>
-        </NavItem>
-        <NavItem>
           <NavLink tag={Link} to={"/users"}>
             Users
           </NavLink>
