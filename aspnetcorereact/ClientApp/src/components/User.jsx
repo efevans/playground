@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import httpClient from "../shared/HttpClient";
 

@@ -25,17 +25,18 @@ namespace aspnetcorereact.Controllers
             //var users = await _dbContext.Users.ToListAsync();
             var username = User.GetLoggedInUserName();
             var email = User.GetLoggedInUserEmail();
-            var id = User.GetLoggedInUserId<string>();
+            var id = User.GetLoggedInUserId<int>();
             var pagedUsers = await _dbContext.Users
                 .OrderBy(b => b.CreatedAt)
                 .Skip(parameters.Skip)
                 .Take(parameters.PageSize)
+                .Include(u => u.Posts)
                 .ToListAsync();
 
-            pagedUsers.ForEach(u =>
-            {
-                u.Posts = _dbContext.Posts.Where(p => p.UserId == u.Id).ToList();
-            });
+            //pagedUsers.ForEach(u =>
+            //{
+            //    u.Posts = _dbContext.Posts.Where(p => p.UserId == u.Id).ToList();
+            //});
             int count = await _dbContext.Users.CountAsync();
             return new PaginationResponse<User>(pagedUsers, count, parameters.PageSize);
         }
@@ -43,11 +44,9 @@ namespace aspnetcorereact.Controllers
         [HttpGet("{id}")]
         public async Task<User> Get(int id)
         {
-            //var user = await _dbContext.Users.Include(u => u.Posts).Where(x => x.Id == id).SingleAsync();
-            User? user = await _dbContext.Users.FindAsync(id);
-#pragma warning disable CS8603 // Possible null reference return.
+            var user = await _dbContext.Users.Include(u => u.Posts).Where(x => x.Id == id).SingleAsync();
+            //User? user = await _dbContext.Users.FindAsync(id);
             return user;
-#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }
