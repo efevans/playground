@@ -8,7 +8,6 @@ import React from "react";
 const AccountBit = () => {
   const loginContext = useContext(LoginContext);
   const loggedIn = loginContext.user !== null;
-  console.log("AccountBit rendered");
 
   return (
     <div id="account-bit">

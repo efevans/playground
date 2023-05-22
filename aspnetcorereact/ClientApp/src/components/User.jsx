@@ -60,15 +60,8 @@ const User = () => {
 };
 
 async function getUser(id) {
-  // const response = await fetch(`api/user/${id}`);
-  // const user = await response.json();
-  // return user;
   const client = httpClient;
   const resp = await client.get(`api/user/${id}`);
-  // const token = localStorage.getItem("token");
-  // const resp = await axios.get(`api/user/${id}`, {
-  //   headers: { Authorization: `Bearer ${token}` },
-  // });
   return resp.data;
 }
 

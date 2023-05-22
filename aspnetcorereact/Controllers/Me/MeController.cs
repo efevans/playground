@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetcorereact.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MeController : ControllerBase
