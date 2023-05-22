@@ -12,11 +12,12 @@ const PostForm = () => {
             name="content"
             placeholder="I did this thing today..."
             type="textarea"
-            className="user-post"
+            className="user-post app-color"
             style={{
               resize: "vertical",
               maxHeight: "12rem",
               minHeight: "6rem",
+              color: "white",
             }}
           />
         </FormGroup>

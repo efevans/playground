@@ -24,7 +24,7 @@ const App = () => {
 
   return (<>
     <LoginContext.Provider value={{ user: user, setUser: setUser }} >
-      <div id='app-divider'>
+      <div id='app-divider' className='app-color'>
         <LeftNavBar />
         <ContentArea />
       </div>
