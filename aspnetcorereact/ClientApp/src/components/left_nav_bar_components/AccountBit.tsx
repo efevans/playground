@@ -15,7 +15,7 @@ const AccountBit = () => {
       <Nav vertical>
         <NavItem>
           {!loggedIn ? (
-            <NavLink tag={Link} to={"/login"}>
+            <NavLink tag={Link} to={"/login"} className="highlightable">
               Login
             </NavLink>
           ) : (
@@ -26,6 +26,7 @@ const AccountBit = () => {
                 localStorage.removeItem("token");
                 console.log("Logged Out");
               }}
+              className="highlightable"
             >
               Logout
             </NavLink>

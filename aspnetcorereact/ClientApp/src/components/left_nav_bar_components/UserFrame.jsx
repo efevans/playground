@@ -5,7 +5,7 @@ const UserFrame = () => {
   var loginContent = useContext(LoginContext);
 
   return (
-    <div id="user-frame">
+    <div id="user-frame" className="highlightable">
       <div id="user-frame-icon" className="centered">
         <img
           alt="logo"

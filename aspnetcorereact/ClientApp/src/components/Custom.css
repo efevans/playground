@@ -17,6 +17,10 @@ html {
   background-color: rgb(33, 24, 44);
 }
 
+.highlightable:hover {
+  background-color: rgb(60, 52, 70);
+}
+
 #app-divider {
   color: aliceblue;
   display: flex;
@@ -53,9 +57,9 @@ html {
   color: inherit;
 }
 
-#left-nav-bar a:hover {
+/* #left-nav-bar a:hover {
   background: #e3e3e3;
-}
+} */
 
 #content-links {
   height: 100%;
@@ -82,9 +86,9 @@ html {
   align-items: stretch;
 }
 
-#user-frame:hover {
+/* #user-frame:hover {
   background: #e3e3e3;
-}
+} */
 
 #user-frame-icon {
   width: 40%;
