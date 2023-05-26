@@ -19,7 +19,7 @@ const ContentLinks = () => {
       <Nav vertical>
         {links.map((link: ContentLink) => {
           return (
-            <NavItem>
+            <NavItem key={link.title}>
               <NavLink tag={Link} to={link.link} className="highlightable">
                 {link.title}
               </NavLink>
