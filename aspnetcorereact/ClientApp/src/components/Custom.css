@@ -123,6 +123,10 @@ html {
   flex-wrap: nowrap;
 }
 
+#user-post:focus {
+  background-color: transparent;
+}
+
 #post-wall {
   display: flex;
   flex-direction: column;
