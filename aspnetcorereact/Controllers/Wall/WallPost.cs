@@ -9,6 +9,8 @@ namespace aspnetcorereact.Controllers.Wall
         public DateTime CreatedAt { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; } = null!;
+        public int LikesCount { get; set; }
+        public bool LikedByMe { get; set; }
 
         public WallPost(int id, string content, DateTime createdAt, int userId, string userName)
         {
@@ -18,7 +20,5 @@ namespace aspnetcorereact.Controllers.Wall
             UserId = userId;
             UserName = userName;
         }
-
-
     }
 }

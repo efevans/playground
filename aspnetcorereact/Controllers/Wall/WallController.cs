@@ -19,19 +19,14 @@ namespace aspnetcorereact.Controllers.Wall
             _userContext = userContext;
         }
 
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var myId = User.GetLoggedInUserId<int>();
-            var results = await (from post in _userContext.Posts
-                           join user in _userContext.Users
-                           on post.UserId equals user.Id
-                          where post.UserId == myId
-                           orderby post.Id descending
-                           select new WallPost(post.Id, post.Content, post.CreatedAt, user.Id, user.Name)).ToListAsync();
 
-            //var posts = await _userContext.Posts.Where(p => p.UserId == myId).OrderByDescending(p => p.Id).ToListAsync();
-            return Ok(results);
+            List<WallPostView> wallPosts = await _userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {myId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\") ORDER BY p.\"Id\") posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {myId} = l.\"UserId\");").ToListAsync();
+
+            return Ok(wallPosts);
         }
     }
 }

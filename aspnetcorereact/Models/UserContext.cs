@@ -7,6 +7,7 @@ namespace aspnetcorereact.Models
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseNpgsql("Host=localhost:5432;Username=postgres;Password=password;Database=blog;SearchPath=public;");
