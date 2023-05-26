@@ -20,6 +20,10 @@ namespace aspnetcorereact.Models
             modelBuilder.Entity<User>()
                 .Property(p => p.CreatedAt)
                 .HasDefaultValueSql("NOW()");
+
+            modelBuilder.Entity<Like>()
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("NOW()");
         }
     }
 }
