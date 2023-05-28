@@ -1,3 +1,6 @@
+import { useState } from "react";
+import httpClient from "../../shared/HttpClient";
+
 export interface PostProps {
   id: number;
   content: string;
@@ -9,6 +12,9 @@ export interface PostProps {
 }
 
 const Post = (props: PostProps) => {
+  const [likedByMe, setLikedByMe] = useState(props.likedByMe);
+  const [localLikeChange, setLocalLikeChange] = useState(0);
+
   const likedImageSrc = require("./HeartLiked.png");
   const unlikedImageSrc = require("./HeartUnliked.png");
 
@@ -34,12 +40,22 @@ const Post = (props: PostProps) => {
                 <img
                   alt="like"
                   style={{ minHeight: "100%", cursor: "pointer" }}
-                  src={props.likedByMe ? likedImageSrc : unlikedImageSrc}
-                  onClick={() => {
+                  src={likedByMe ? likedImageSrc : unlikedImageSrc}
+                  onClick={async () => {
                     console.log("Liked this post!");
+
+                    if (likedByMe) {
+                      const response = await postUnlike({ postId: props.id });
+                      setLikedByMe(response.postIsLiked);
+                      setLocalLikeChange(localLikeChange - 1);
+                    } else {
+                      const response = await postLike({ postId: props.id });
+                      setLikedByMe(response.postIsLiked);
+                      setLocalLikeChange(localLikeChange + 1);
+                    }
                   }}
                 ></img>
-                <div>{props.likeCount}</div>
+                <div>{props.likeCount + localLikeChange}</div>
               </div>
             </div>
           </div>
@@ -48,5 +64,35 @@ const Post = (props: PostProps) => {
     </>
   );
 };
+
+interface PostLikeRequestProps {
+  postId: number;
+}
+
+interface PostLikeResponseProps {
+  postId: number;
+  postIsLiked: boolean;
+}
+
+async function postLike(
+  data: PostLikeRequestProps
+): Promise<PostLikeResponseProps> {
+  return await postLikeRequest("like", data);
+}
+
+async function postUnlike(
+  data: PostLikeRequestProps
+): Promise<PostLikeResponseProps> {
+  return await postLikeRequest("unlike", data);
+}
+
+async function postLikeRequest(
+  url: string,
+  data: PostLikeRequestProps
+): Promise<PostLikeResponseProps> {
+  const client = httpClient;
+  const resp = await client.post(`/api/posts/${data.postId}/${url}`);
+  return resp.data as PostLikeResponseProps;
+}
 
 export default Post;

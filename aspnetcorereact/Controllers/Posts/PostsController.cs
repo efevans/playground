@@ -95,5 +95,67 @@ namespace aspnetcorereact.Controllers.Posts
 
             return NoContent();
         }
+
+        [HttpPost("{id}/like")]
+        public async Task<IActionResult> Like(int id)
+        {
+            if (_context.Likes == null)
+            {
+                return Problem("Entity set 'UserContext.Likes'  is null.");
+            }
+
+            var myId = User.GetLoggedInUserId<int>();
+
+            if (_context.Likes.Any(l => l.PostId == id && l.UserId == myId))
+            {
+                return BadRequest("You have already liked this post");
+            }
+
+            Like like = new()
+            {
+                PostId = id,
+                UserId = myId,
+            };
+
+            _context.Likes.Add(like);
+            await _context.SaveChangesAsync();
+
+            PostLikeResponse response = new()
+            {
+                PostId = id,
+                PostIsLiked = true,
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPost("{id}/unlike")]
+        public async Task<IActionResult> Unlike(int id)
+        {
+            if (_context.Likes == null)
+            {
+                return Problem("Entity set 'UserContext.Likes'  is null.");
+            }
+
+            var myId = User.GetLoggedInUserId<int>();
+
+            Like? like = _context.Likes.FirstOrDefault(l => l.PostId == id && l.UserId == myId);
+
+            if (like == null)
+            {
+                return BadRequest("You have not liked post");
+            }
+            
+            _context.Likes.Remove(like);
+            await _context.SaveChangesAsync();
+
+            PostLikeResponse response = new()
+            {
+                PostId = id,
+                PostIsLiked = false,
+            };
+
+            return Ok(response);
+        }
     }
 }
