@@ -21,6 +21,10 @@ html {
   background-color: rgb(60, 52, 70);
 }
 
+.transparent-on-focus:focus {
+  background-color: transparent;
+}
+
 #app-divider {
   color: aliceblue;
   display: flex;

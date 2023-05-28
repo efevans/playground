@@ -33,6 +33,10 @@ const Login = () => {
             name="email"
             placeholder="email..."
             type="email"
+            className="app-color transparent-on-focus"
+            style={{
+              color: "white",
+            }}
           />
         </FormGroup>
         <FormGroup>
@@ -42,6 +46,10 @@ const Login = () => {
             name="password"
             placeholder="password..."
             type="password"
+            className="app-color transparent-on-focus"
+            style={{
+              color: "white",
+            }}
           />
         </FormGroup>
         <Button>Login</Button>
