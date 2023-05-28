@@ -24,7 +24,9 @@ namespace aspnetcorereact.Controllers.Wall
         {
             var myId = User.GetLoggedInUserId<int>();
 
-            List<WallPostView> wallPosts = await _userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {myId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\")) posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {myId} = l.\"UserId\") ORDER BY posts.\"Id\" DESC;").ToListAsync();
+            List<WallPostView> wallPosts = await WallPostView.GetWallPostsForUser(myId, _userContext);
+
+            //List<WallPostView> wallPosts = await _userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {myId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\")) posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {myId} = l.\"UserId\") ORDER BY posts.\"Id\" DESC;").ToListAsync();
 
             return Ok(wallPosts);
         }

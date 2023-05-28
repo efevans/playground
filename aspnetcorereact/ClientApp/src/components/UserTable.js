@@ -76,7 +76,7 @@ async function getUsers({ page }) {
   // const resp = await axios.get(myUrl, { headers: { "Authorization": `Bearer ${token}` } });
 
   const client = httpClient;
-  const resp = await client.get('api/user', { params: { pageNum: page } });
+  const resp = await client.get('api/users', { params: { pageNum: page } });
   return { users: resp.data.values, ...resp.data };
 }
 

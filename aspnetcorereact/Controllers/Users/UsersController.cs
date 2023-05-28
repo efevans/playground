@@ -5,18 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using aspnetcorereact.Controllers.Identity;
 
-namespace aspnetcorereact.Controllers
+namespace aspnetcorereact.Controllers.Users
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly UserContext _dbContext;
+        private readonly UserContext _userContext;
 
-        public UserController(UserContext dbContext)
+        public UsersController(UserContext dbContext)
         {
-            _dbContext = dbContext;
+            _userContext = dbContext;
         }
 
         [HttpGet]
@@ -26,7 +26,7 @@ namespace aspnetcorereact.Controllers
             var username = User.GetLoggedInUserName();
             var email = User.GetLoggedInUserEmail();
             var id = User.GetLoggedInUserId<int>();
-            var pagedUsers = await _dbContext.Users
+            var pagedUsers = await _userContext.Users
                 .OrderBy(b => b.CreatedAt)
                 .Skip(parameters.Skip)
                 .Take(parameters.PageSize)
@@ -37,16 +37,23 @@ namespace aspnetcorereact.Controllers
             //{
             //    u.Posts = _dbContext.Posts.Where(p => p.UserId == u.Id).ToList();
             //});
-            int count = await _dbContext.Users.CountAsync();
+            int count = await _userContext.Users.CountAsync();
             return new PaginationResponse<User>(pagedUsers, count, parameters.PageSize);
         }
 
         [HttpGet("{id}")]
-        public async Task<User> Get(int id)
+        public async Task<GetUserResponse> Get(int id)
         {
-            var user = await _dbContext.Users.Include(u => u.Posts).Where(x => x.Id == id).SingleAsync();
-            //User? user = await _dbContext.Users.FindAsync(id);
-            return user;
+            var user = await _userContext.Users.Include(u => u.Posts).Where(x => x.Id == id).SingleAsync();
+            List<WallPostView> posts = await WallPostView.GetWallPostsForUser(id, _userContext);
+
+            var resp = new GetUserResponse()
+            {
+                Name = user.Name,
+                Posts = posts
+            };
+
+            return resp;
         }
     }
 }

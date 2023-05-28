@@ -1,36 +1,38 @@
 import { useLoaderData } from "react-router-dom";
 import httpClient from "../shared/HttpClient";
+import PostWall from "./wall/PostWall";
+import { PostProps } from "./wall/Post";
 
-export async function loader({ params }) {
+export async function loader({ params }: any) {
   const user = await getUser(params.userId);
   if (!user) {
     throw new Response("", {
-      status: 404,
+      status: 418,
       statusText: "User Not Found",
     });
   }
-  return { user };
+  return { ...user };
 }
 
 const User = () => {
-  const { user } = useLoaderData();
-  const postStyles = {
-    padding: "0.8rem",
-    border: "1px solid black",
-    minHeight: "7rem",
-    maxHeight: "12rem",
-  };
+  const { name, posts } = useLoaderData() as GetUserResponseProps;
+  // const postStyles = {
+  //   padding: "0.8rem",
+  //   border: "1px solid black",
+  //   minHeight: "7rem",
+  //   maxHeight: "12rem",
+  // };
 
-  const dateStyles = {
-    color: "ghostwhite",
-    fontSize: "12px",
-    marginBottom: "0.5rem",
-    textAlign: "right",
-  };
+  // const dateStyles = {
+  //   color: "ghostwhite",
+  //   fontSize: "12px",
+  //   marginBottom: "0.5rem",
+  //   textAlign: "right",
+  // };
   return (
     <>
-      <div>{user.name}</div>
-      <div
+      <div>{name}</div>
+      {/* <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -54,15 +56,21 @@ const User = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
+      <PostWall posts={posts} />
     </>
   );
 };
 
-async function getUser(id) {
+interface GetUserResponseProps {
+  name: string;
+  posts: PostProps[];
+}
+
+async function getUser(id: number): Promise<GetUserResponseProps> {
   const client = httpClient;
-  const resp = await client.get(`api/user/${id}`);
-  return resp.data;
+  const resp = await client.get(`api/users/${id}`);
+  return resp.data as GetUserResponseProps;
 }
 
 export default User;

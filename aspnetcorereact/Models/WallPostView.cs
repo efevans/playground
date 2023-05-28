@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace aspnetcorereact.Models
 {
@@ -13,5 +14,12 @@ namespace aspnetcorereact.Models
         public string UserName { get; set; } = null!;
         public int LikeCount { get; set; }
         public bool LikedByMe { get; set; }
+
+        public static async Task<List<WallPostView>> GetWallPostsForUser(int userId, UserContext userContext)
+        {
+            List<WallPostView> wallPosts = await userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {userId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\")) posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {userId} = l.\"UserId\") ORDER BY posts.\"Id\" DESC;").ToListAsync();
+
+            return wallPosts;
+        }
     }
 }
