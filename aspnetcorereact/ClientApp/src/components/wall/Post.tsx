@@ -4,9 +4,14 @@ export interface PostProps {
   createdAt: string;
   userId: number;
   userName: string;
+  likeCount: number;
+  likedByMe: boolean;
 }
 
 const Post = (props: PostProps) => {
+  const likedImageSrc = require("./HeartLiked.png");
+  const unlikedImageSrc = require("./HeartUnliked.png");
+
   return (
     <>
       <div className="post-border">
@@ -24,7 +29,19 @@ const Post = (props: PostProps) => {
               <div className="post-date">{props.createdAt}</div>
             </div>
             <div className="post-content">{props.content}</div>
-            <div className="post-interaction">like button</div>
+            <div className="post-interaction">
+              <div className="post-interaction-container highlightable">
+                <img
+                  alt="like"
+                  style={{ minHeight: "100%", cursor: "pointer" }}
+                  src={props.likedByMe ? likedImageSrc : unlikedImageSrc}
+                  onClick={() => {
+                    console.log("Liked this post!");
+                  }}
+                ></img>
+                <div>{props.likeCount}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
