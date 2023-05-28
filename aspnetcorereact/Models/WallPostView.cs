@@ -17,7 +17,12 @@ namespace aspnetcorereact.Models
 
         public static async Task<List<WallPostView>> GetWallPostsForUser(int userId, UserContext userContext)
         {
-            List<WallPostView> wallPosts = await userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {userId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\")) posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {userId} = l.\"UserId\") ORDER BY posts.\"Id\" DESC;").ToListAsync();
+            return await GetWallPostsForUser(userId, userId, userContext);
+        }
+
+        public static async Task<List<WallPostView>> GetWallPostsForUser(int usersId, int likeMatchUsersId, UserContext userContext)
+        {
+            List<WallPostView> wallPosts = await userContext.Database.SqlQuery<WallPostView>($"SELECT posts.*, l.\"Id\" IS NOT NULL AS \"LikedByMe\" FROM (SELECT p.*, u.\"Name\" AS \"UserName\", COUNT(l.\"Id\") AS \"LikeCount\" FROM \"Posts\" p JOIN \"Users\" u ON (p.\"UserId\" = u.\r\n\"Id\") LEFT JOIN \"Likes\" l ON (p.\"Id\" = l.\"PostId\") WHERE p.\"UserId\" = {usersId} GROUP BY (p.\"Id\", p.\"Content\", p.\"CreatedAt\", p.\"UserId\", u.\"Name\")) posts\r\n LEFT JOIN \"Likes\" l on (posts.\"Id\" = l.\"PostId\" AND {likeMatchUsersId} = l.\"UserId\") ORDER BY posts.\"Id\" DESC;").ToListAsync();
 
             return wallPosts;
         }

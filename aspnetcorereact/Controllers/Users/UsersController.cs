@@ -44,8 +44,9 @@ namespace aspnetcorereact.Controllers.Users
         [HttpGet("{id}")]
         public async Task<GetUserResponse> Get(int id)
         {
+            var myId = User.GetLoggedInUserId<int>();
             var user = await _userContext.Users.Include(u => u.Posts).Where(x => x.Id == id).SingleAsync();
-            List<WallPostView> posts = await WallPostView.GetWallPostsForUser(id, _userContext);
+            List<WallPostView> posts = await WallPostView.GetWallPostsForUser(id, myId, _userContext);
 
             var resp = new GetUserResponse()
             {
